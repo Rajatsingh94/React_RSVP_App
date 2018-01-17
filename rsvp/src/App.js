@@ -44,6 +44,20 @@ class App extends Component {
 
     toggleEditingAt =(index) => this.togglePropertyAt('isEditing',index);
 
+   toggleSetName = (name,indextoChange) =>
+    this.setState({
+      guests: this.state.guests.map((guest,index) =>{
+        if(index === indextoChange)
+        {
+          return {
+            ...guest,
+            name
+          };
+        }
+          return guest;
+      })
+    });
+
   render() {
     return (
       <div className="App">
@@ -80,6 +94,7 @@ class App extends Component {
           </table>
           <GuestList
             guests = {this.state.guests}
+            handleName = {this.toggleSetName}
             toggleEditingAt = {this.toggleEditingAt}
             toggleConfirmationAt={this.toggleConfirmationAt}/>
         </div>
