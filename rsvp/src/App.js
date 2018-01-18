@@ -4,6 +4,8 @@ import GuestList from './GuestList';
 
 class App extends Component {
   state = {
+    isFiltered:false,
+    pendingGuest:'',
     guests:[
       {
         name:'Saloni',
@@ -25,6 +27,8 @@ class App extends Component {
 
   getTotalInvited=()=> this.state.guests.length;
 
+  getToggleFiltered = () => this.setState({ isFiltered: !this.state.isFiltered});
+
   togglePropertyAt = (property,indextoChange) =>
     this.setState({
       guests: this.state.guests.map((guest,index) =>{
@@ -39,24 +43,44 @@ class App extends Component {
       })
     });
 
+    // func to take input from form
+    pendingGuestValue = (e) => this.setState({pendingGuest:e.target.value});
+
+    // func to handle confirmation property
     toggleConfirmationAt = (index) =>
       this.togglePropertyAt('isConfirmed',index);
 
-    toggleEditingAt =(index) => this.togglePropertyAt('isEditing',index);
+    // func to take Edit property
+    toggleEditingAt = (index) => this.togglePropertyAt('isEditing',index);
 
-   toggleSetName = (name,indextoChange) =>
-    this.setState({
-      guests: this.state.guests.map((guest,index) =>{
-        if(index === indextoChange)
-        {
-          return {
-            ...guest,
-            name
-          };
-        }
-          return guest;
-      })
-    });
+    // func to adding guest from form to GuestList
+    newGuestvalueAdd = (e) => {
+      e.preventDefault();
+      this.setState({
+        guests:[{
+          name:this.state.pendingGuest,
+          isConfirmed:false,
+          isEditing:false
+        },
+        ...this.state.guests
+      ],
+      pendingGuest:''
+      });
+    }
+
+    toggleSetName = (name,indextoChange) =>
+     this.setState({
+       guests: this.state.guests.map((guest,index) =>{
+         if(index === indextoChange)
+         {
+           return {
+             ...guest,
+             name
+           };
+         }
+           return guest;
+       })
+     });
 
   render() {
     return (
@@ -64,16 +88,24 @@ class App extends Component {
         <header>
           <h1></h1>
           <p></p>
-          <form>
-              <input type="text" value="Safia" placeholder="Invite Someone"/>
-              <button type="submit" name="submit" value="submit">Submit</button>
+          <form onSubmit={this.newGuestvalueAdd}>
+              <input type="text"
+                onChange={this.pendingGuestValue}
+                value={this.state.pendingGuest}
+                placeholder="Invite Someone"/>
+              <button type="submit"
+                name="submit"
+                value="submit">Submit</button>
           </form>
         </header>
         <div className="main">
           <div>
             <h2>Invitees</h2>
             <label>
-              <input type="checkbox" /> Hide those who haven't responded
+              <input type="checkbox"
+                checked={this.state.isFiltered}
+              onChange={this.getToggleFiltered}
+            /> Hide those who haven't responded
             </label>
           </div>
           <table className="counter">
@@ -96,7 +128,10 @@ class App extends Component {
             guests = {this.state.guests}
             handleName = {this.toggleSetName}
             toggleEditingAt = {this.toggleEditingAt}
-            toggleConfirmationAt={this.toggleConfirmationAt}/>
+            toggleConfirmationAt={this.toggleConfirmationAt}
+            isFiltered={this.state.isFiltered}
+
+          />
         </div>
       </div>
     );
