@@ -2,6 +2,7 @@ import React from 'react';
 import GuestName from './GuestName';
 import PropTypes from 'prop-types';
 
+
 const Guest = props =>
 
     <li className="responded">
@@ -14,7 +15,7 @@ const Guest = props =>
         <input type="checkbox" onChange={props.handler} checked = {props.isConfirmed} /> Confirmed
       </label>
       <button onClick={props.editinghandler}>{props.isEditing ? "save" : "edit"}</button>
-      <button>remove</button>
+      <button onClick={props.removebutton}>remove</button>
     </li>
 
 
@@ -24,7 +25,8 @@ const Guest = props =>
   handleName:PropTypes.func.isRequired,
   isEditing: PropTypes.bool.isRequired,
   handler:PropTypes.func.isRequired,
-  editinghandler: PropTypes.func.isRequired
+  editinghandler: PropTypes.func.isRequired,
+  removebutton:PropTypes.func.isRequired
 
 }
 export default Guest;

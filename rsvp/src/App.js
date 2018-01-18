@@ -53,6 +53,15 @@ class App extends Component {
     // func to take Edit property
     toggleEditingAt = (index) => this.togglePropertyAt('isEditing',index);
 
+    removeHandler = (index) =>
+    this.setState({
+      guests:[
+        ...this.state.guests.slice(0,index),
+        ...this.state.guests.slice(index+1)
+      ]
+
+    });
+
     // func to adding guest from form to GuestList
     newGuestvalueAdd = (e) => {
       e.preventDefault();
@@ -130,6 +139,8 @@ class App extends Component {
             toggleEditingAt = {this.toggleEditingAt}
             toggleConfirmationAt={this.toggleConfirmationAt}
             isFiltered={this.state.isFiltered}
+            removeHandler={this.removeHandler}
+            pending={this.state.pendingGuest}
 
           />
         </div>
